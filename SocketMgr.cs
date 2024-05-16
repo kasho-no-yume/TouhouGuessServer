@@ -45,10 +45,16 @@ namespace TouhouGuessServer
                     if (received == 0) // Client disconnected
                     {
                         Console.WriteLine("客户端下号: " + clientSocket.RemoteEndPoint);
+                        if(DataCache.OnlineUser.TryGetValue(clientSocket.RemoteEndPoint, out var user))
+                        {
+                            user = null;
+                            DataCache.OnlineUser.Remove(clientSocket.RemoteEndPoint);
+                        }                      
                         break;
                     }
 
                     string message = Encoding.UTF8.GetString(_buffer, 0, received);
+                    EventMgr.DealRecvSocketMsgEvent(message, clientSocket);
                     Console.WriteLine("收到来自客户端的消息 " + clientSocket.RemoteEndPoint + ": " + message);                  
                 }
             }
