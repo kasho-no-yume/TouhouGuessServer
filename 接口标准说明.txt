@@ -1,0 +1,32 @@
+﻿仅data发来的object说明，以服务端视角。
+
+RSME.connectAndLogin  发来名字的字符串
+
+RSME.refreshHall  不用发数据。
+
+RSME.createRoom 不用发数据。
+
+STCME.loginsuccess 不用发数据 loginfailure也同理。
+
+STCME.refreshHall发送json数组[{id   name  num}]分别是房间的id和名字，以及当前的房间人数。
+
+STCME.someoneExit 只发送了退出玩家的名字。
+
+STCME.Enterroom 用于同步进入房间的信息。应指定host。是个obj数组。[{name host:false}]
+在收到enterroom，应立即向玩家同步设置信息。即下面这条。此外，也用于结束游戏。
+
+STCME.ChangeRoomSetting 提供一个json {old  aim mode round}其中全是int类型。
+RSME.changeroomsetting同理。
+
+STCME.ServerMsg提个一个字符串，给玩家服务器提示。基本是给错误使用的。
+
+RSME.joinroom 只需要一个房间id。不需要json。
+
+RSME.startgame 不用发数据。
+
+RSME.HostUploadQues。id是题，start是开始截断的时间，dur是时长，如果是选择题，给个数组作为选项。
+STCME.NewQuesData直接转发。服务器不用处理任何东西。
+
+Answer和someoneanswer格式一样，因为仅转发。内容是name（玩家名字）和id（回答）
+
+chatting改为一样的了，也纯转发。name和Content。

@@ -47,7 +47,7 @@ namespace TouhouGuessServer
                         Console.WriteLine("客户端下号: " + clientSocket.RemoteEndPoint);
                         if(DataCache.OnlineUser.TryGetValue(clientSocket.RemoteEndPoint, out var user))
                         {
-                            user = null;
+                            user.Dispose();
                             DataCache.OnlineUser.Remove(clientSocket.RemoteEndPoint);
                         }                      
                         break;
