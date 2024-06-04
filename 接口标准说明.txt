@@ -30,3 +30,8 @@ STCME.NewQuesData直接转发。服务器不用处理任何东西。
 Answer和someoneanswer格式一样，因为仅转发。内容是name（玩家名字）和id（回答）
 
 chatting改为一样的了，也纯转发。name和Content。
+
+
+
+回过头来看，有些转发操作其实根本不必要各定个协议。直接让客户端内部自己消化就行了。
+诶。

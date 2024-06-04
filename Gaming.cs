@@ -54,5 +54,13 @@ namespace TouhouGuessServer
                 Boardcast(new Message(STCME.NewQuesData,message.data));
             }
         }
+
+        public void SomeoneWaive(Message msg)
+        {
+            if(state == State.guessing)
+            {
+                Boardcast(new Message(STCME.SomeoneWaive,msg.data));
+            }
+        }
     }
 }

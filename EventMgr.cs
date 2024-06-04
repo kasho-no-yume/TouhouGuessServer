@@ -15,6 +15,7 @@ namespace TouhouGuessServer
         HostUploadQues,
         Chatting,
         Answer,
+        Waiver,
         ExitRoom
     }
     enum STCME  //send to client message event
@@ -29,6 +30,7 @@ namespace TouhouGuessServer
         GameStart,
         NewQuesData,
         SomeoneGuess,
+        SomeoneWaive,
         SomeoneExit
     }
     internal class Message
@@ -162,6 +164,15 @@ namespace TouhouGuessServer
                             if (DataCache.ReadyRoom.TryGetValue(user.GameRoomId, out var gameRoom))
                             {
                                 gameRoom.ExitRoom(user);
+                            }
+                        }
+                        break;
+                    case RSME.Waiver:
+                        if (DataCache.OnlineUser.TryGetValue(socket.RemoteEndPoint, out user))
+                        {
+                            if (DataCache.ReadyRoom.TryGetValue(user.GameRoomId, out var gameRoom))
+                            {
+                                gameRoom.GamingIns?.SomeoneWaive(obj);
                             }
                         }
                         break;
