@@ -6,7 +6,7 @@ RSME.refreshHall  不用发数据。
 
 RSME.createRoom 不用发数据。
 
-STCME.loginsuccess 不用发数据 loginfailure也同理。
+STCME.loginsuccess 发一个服务器标志。标志是原版服务器还是dlc服务器。 loginfailure不用发数据。
 
 STCME.refreshHall发送json数组[{id   name  num}]分别是房间的id和名字，以及当前的房间人数。
 

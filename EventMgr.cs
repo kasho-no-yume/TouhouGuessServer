@@ -37,6 +37,10 @@ namespace TouhouGuessServer
     {
         public int id { get; set; }
         public object? data { get; set; }
+        public Message()
+        {
+
+        }
         public Message(int id, object data)
         {
             this.id = id;
@@ -67,14 +71,24 @@ namespace TouhouGuessServer
                 switch ((RSME)obj.id)
                 {
                     case RSME.ConnectAndLogin:
+                        foreach(var kv in DataCache.OnlineUser)
+                        {
+                            if (kv.Value.UserName.Equals((string)obj.data))
+                            {
+                                ReplyToClient(socket, new Message((int)STCME.LoginFailure, ""));
+                                ReplyToClient(socket, new Message((int)STCME.ServerMsg, "昵称重复！请重新取名。"));
+                                return;
+                            }
+                        }
                         var player = new User(socket.RemoteEndPoint, (string)obj.data, socket);
                         if(DataCache.OnlineUser.TryAdd(socket.RemoteEndPoint, player))
                         {
-                            ReplyToClient(socket, new Message((int)STCME.LoginSuccess, ""));
+                            ReplyToClient(socket, new Message((int)STCME.LoginSuccess, "Original"));
                         }
                         else
                         {
-                            ReplyToClient(socket, new Message((int)STCME.LoginFailure, ""));    //这条的话，就不回发服务器通知了。谁知道socket是好是坏。
+                            ReplyToClient(socket, new Message((int)STCME.LoginFailure, ""));
+                            ReplyToClient(socket, new Message((int)STCME.ServerMsg, "进服失败。"));
                         }
                         break;
                     case RSME.RefreshHall:
@@ -99,7 +113,8 @@ namespace TouhouGuessServer
                     case RSME.JoinRoom:
                         if(DataCache.OnlineUser.TryGetValue(socket.RemoteEndPoint, out user))
                         {
-                            if(DataCache.ReadyRoom.TryGetValue((int)obj.data,out var gameRoom))
+                            int num = (int)(long)obj.data;
+                            if (DataCache.ReadyRoom.TryGetValue(num,out var gameRoom))
                             {
                                 if (!gameRoom.EnterRoom(user))
                                 {

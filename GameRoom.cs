@@ -44,7 +44,7 @@ namespace TouhouGuessServer
         }
         private void  SyncSettingToPlayer(User user)
         {
-            EventMgr.ReplyToClient(user.Socket, new Message(STCME.ChangeRoomSetting, string.Format("{\"old\":{0},\"aim\":{1},\"mode\":{2},\"round\":{3}}"
+            EventMgr.ReplyToClient(user.Socket, new Message(STCME.ChangeRoomSetting, string.Format("{{\"old\":{0},\"aim\":{1},\"mode\":{2},\"round\":{3}}}"
                 ,this.useOldAlbum?1:0,this.aimSecond,(int)this.mode, this.roundNum)));
         }
         private void SyncSettingToAllPlayer()

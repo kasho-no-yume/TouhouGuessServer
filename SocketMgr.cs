@@ -46,9 +46,9 @@ namespace TouhouGuessServer
                     {
                         Console.WriteLine("客户端下号: " + clientSocket.RemoteEndPoint);
                         if(DataCache.OnlineUser.TryGetValue(clientSocket.RemoteEndPoint, out var user))
-                        {
-                            user.Dispose();
+                        {                            
                             DataCache.OnlineUser.Remove(clientSocket.RemoteEndPoint);
+                            user.Dispose();
                         }                      
                         break;
                     }
@@ -60,11 +60,17 @@ namespace TouhouGuessServer
             }
             catch (Exception ex)
             {
-                Console.WriteLine("socket出现异常: " + ex.Message);
+                Console.WriteLine("socket断开连接: " + ex.Message + " " + clientSocket.RemoteEndPoint);
+                if (DataCache.OnlineUser.TryGetValue(clientSocket.RemoteEndPoint, out var user))
+                {                    
+                    DataCache.OnlineUser.Remove(clientSocket.RemoteEndPoint);
+                    user.Dispose();
+                }
             }
             finally
             {
                 clientSocket.Close();
+                clientSocket.Dispose();
             }
         }
 
