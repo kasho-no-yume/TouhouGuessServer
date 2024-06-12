@@ -1,6 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Text.Json.Nodes;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace TouhouGuessServer
 {
@@ -132,7 +133,7 @@ namespace TouhouGuessServer
                         {
                             if(DataCache.ReadyRoom.TryGetValue(user.GameRoomId,out var gameRoom))
                             {
-                                var data = jobj["data"];
+                                var data = JObject.Parse(jobj["data"].ToString());
                                 gameRoom.GetSettingFromHost((int)data["old"] == 1?true:false, (int)data["aim"], (int)data["mode"], (int)data["round"]);
                             }
                         }

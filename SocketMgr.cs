@@ -74,15 +74,28 @@ namespace TouhouGuessServer
             }
         }
 
-        public void SendToClient(Socket clientSocket,String msg)
+        public void SendToClient(Socket clientSocket, String msg)
         {
             Task.Run(async () =>
             {
-                byte[] responseBuffer = Encoding.UTF8.GetBytes(msg);
-                // Echo the message back to the client
+                // 将消息字符串转换为字节数组
+                byte[] messageBytes = Encoding.UTF8.GetBytes(msg);
+
+                // 获取消息长度前缀（4个字节，表示消息的长度）
+                byte[] lengthPrefix = BitConverter.GetBytes(messageBytes.Length);
+
+                // 创建一个包含长度前缀和消息的最终发送缓冲区
+                byte[] responseBuffer = new byte[lengthPrefix.Length + messageBytes.Length];
+
+                // 将长度前缀和消息字节数组复制到发送缓冲区
+                Array.Copy(lengthPrefix, 0, responseBuffer, 0, lengthPrefix.Length);
+                Array.Copy(messageBytes, 0, responseBuffer, lengthPrefix.Length, messageBytes.Length);
+
+                // 发送完整的消息（包含长度前缀和消息内容）
                 await clientSocket.SendAsync(responseBuffer, SocketFlags.None);
                 Console.WriteLine("向客户端发送消息：" + clientSocket.RemoteEndPoint + ": " + msg);
             });
         }
+
     }
 }
