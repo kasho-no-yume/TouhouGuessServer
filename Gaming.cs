@@ -38,6 +38,7 @@ namespace TouhouGuessServer
                 this.leftRound--;
                 if(leftRound == 0)
                 {
+                    await Task.Delay(4000);
                     GameEnd();
                     return;
                 }

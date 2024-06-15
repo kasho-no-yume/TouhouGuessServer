@@ -18,8 +18,9 @@ namespace TouhouGuessServer
         }
         public SocketMgr() 
         { 
-            var ip = new IPEndPoint(IPAddress.Any, port);
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            var ip = new IPEndPoint(IPAddress.IPv6Any, port);
+            socket = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
+            socket.DualMode = true;
             socket.Bind(ip);
             socket.Listen(100);
         }

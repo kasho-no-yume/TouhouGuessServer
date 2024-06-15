@@ -144,6 +144,7 @@ namespace TouhouGuessServer
                 return;
             }
             gaming = true;
+            BoardcastToRoom(new Message(STCME.GameStart, ""));
             this.gamingIns = new Gaming(this.roundNum, BoardcastToRoom, EndGame);
         }
     }
